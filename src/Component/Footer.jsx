@@ -3,9 +3,6 @@ import { Link } from "react-router-dom";
 import {
   Dumbbell,
   Send,
-  Youtube,
-  Twitter,
-  Disc as Discord,
   MapPin,
   Phone,
   Mail,
@@ -13,6 +10,7 @@ import {
   CheckCircle2,
 } from "lucide-react";
 
+// Safe Inline SVG for Instagram
 const InstagramIcon = (props) => (
   <svg
     {...props}
@@ -27,6 +25,57 @@ const InstagramIcon = (props) => (
     <rect width="20" height="20" x="2" y="2" rx="5" ry="5" />
     <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
     <line x1="17.5" x2="17.51" y1="6.5" y2="6.5" />
+  </svg>
+);
+
+// Safe Inline SVG for Twitter / X
+const TwitterIcon = (props) => (
+  <svg
+    {...props}
+    xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+  >
+    <path d="M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-18 11.6 2.2.1 4.4-.6 6-2C3 15.5.5 9.6 3 5c2.2 2.6 5.6 4.1 9 4-.9-4.2 4-6.6 7-3.8 1.1 0 3-1.2 3-1.2z" />
+  </svg>
+);
+
+// Safe Inline SVG for YouTube
+const YoutubeIcon = (props) => (
+  <svg
+    {...props}
+    xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+  >
+    <path d="M2.5 17a24.12 24.12 0 0 1 0-10 2 2 0 0 1 1.4-1.4C5.8 5 12 5 12 5s6.2 0 8.1.6a2 2 0 0 1 1.4 1.4 24.12 24.12 0 0 1 0 10 2 2 0 0 1-1.4 1.4c-1.9.6-8.1.6-8.1.6s-6.2 0-8.1-.6a2 2 0 0 1-1.4-1.4Z" />
+    <polygon points="10 15 15 12 10 9 10 15" fill="currentColor" />
+  </svg>
+);
+
+// Safe Inline SVG for Discord
+const DiscordIcon = (props) => (
+  <svg
+    {...props}
+    xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+  >
+    <circle cx="9" cy="12" r="1" />
+    <circle cx="15" cy="12" r="1" />
+    <path d="M7.5 4.8c2.5-.8 5.5-.8 8 0 1.2 1.8 2.2 4 2.5 6.2 0 2.8-.8 5.5-2.2 7.8-2.6.8-5.4.8-8 0-1.4-2.3-2.2-5-2.2-7.8.3-2.2 1.3-4.4 2.5-6.2z" />
   </svg>
 );
 
@@ -121,9 +170,9 @@ function Footer() {
             <div className="flex items-center gap-3 pt-2">
               {[
                 { icon: InstagramIcon, href: "#", label: "Instagram" },
-                { icon: Youtube, href: "#", label: "YouTube" },
-                { icon: Twitter, href: "#", label: "Twitter" },
-                { icon: Discord, href: "#", label: "Discord" },
+                { icon: YoutubeIcon, href: "#", label: "YouTube" },
+                { icon: TwitterIcon, href: "#", label: "Twitter" },
+                { icon: DiscordIcon, href: "#", label: "Discord" },
               ].map((social, idx) => (
                 <a
                   key={idx}
