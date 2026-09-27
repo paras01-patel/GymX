@@ -1,447 +1,538 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
-import { 
-  Dumbbell, 
-  Flame, 
-  Trophy, 
-  Zap, 
-  ShieldCheck, 
-  ShoppingBag, 
-  Star, 
-  ChevronRight, 
-  Calculator, 
-  Check, 
-  ArrowRight 
-} from 'lucide-react';
+import React, { useState } from "react";
+import { Link } from "react-router-dom";
+import {
+  Zap,
+  ShoppingBag,
+  Dumbbell,
+  ShieldCheck,
+  Truck,
+  Star,
+  ArrowRight,
+  Flame,
+  PackageCheck,
+  Sparkles,
+  ChevronRight,
+  Calculator,
+  Check,
+  Trophy,
+  Users,
+  Clock,
+  HeartPulse,
+} from "lucide-react";
+
+// Dedicated Gym Needs Product Catalog
+const storeProducts = [
+  {
+    id: 1,
+    name: "CyberWhey 100% Isolate Protein (2kg)",
+    category: "protein",
+    categoryLabel: "Protein",
+    price: "₹4,999",
+    originalPrice: "₹6,499",
+    rating: 4.9,
+    reviews: 240,
+    tag: "BEST SELLER",
+    image: "https://images.unsplash.com/photo-1593095948071-474c5cc2989d?auto=format&fit=crop&q=80&w=500",
+    desc: "27g Pure Whey Isolate per serving with Digestive Enzymes.",
+  },
+  {
+    id: 2,
+    name: "Ultra-Pure Creatine Monohydrate (250g)",
+    category: "creatine",
+    categoryLabel: "Creatine",
+    price: "₹1,199",
+    originalPrice: "₹1,599",
+    rating: 4.9,
+    reviews: 185,
+    tag: "MAX POWER",
+    image: "https://images.unsplash.com/photo-1579722821273-0f6c7d44362f?auto=format&fit=crop&q=80&w=500",
+    desc: "Microfiltered 100% Pure Monohydrate for strength & size.",
+  },
+  {
+    id: 3,
+    name: "NitroSurge Explosive Pre-Workout (30 Servings)",
+    category: "preworkout",
+    categoryLabel: "Pre-Workout",
+    price: "₹2,199",
+    originalPrice: "₹2,899",
+    rating: 4.8,
+    reviews: 142,
+    tag: "HIGH ENERGY",
+    image: "https://images.unsplash.com/photo-1546483875-ad9014c88eba?auto=format&fit=crop&q=80&w=500",
+    desc: "300mg Caffeine + L-Citrulline for extreme pump and laser focus.",
+  },
+  {
+    id: 4,
+    name: "GymX Heavy-Duty Leather Lifting Belt",
+    category: "gear",
+    categoryLabel: "Gym Gear",
+    price: "₹1,899",
+    originalPrice: "₹2,499",
+    rating: 4.9,
+    reviews: 310,
+    tag: "PRO GEAR",
+    image: "https://images.unsplash.com/photo-1517838277536-f5f99be501cd?auto=format&fit=crop&q=80&w=500",
+    desc: "10mm genuine leather for heavy squats & deadlift lumbar support.",
+  },
+  {
+    id: 5,
+    name: "Pro Padded Wrist Wraps & Lifting Straps Combo",
+    category: "gear",
+    categoryLabel: "Gym Gear",
+    price: "₹799",
+    originalPrice: "₹1,199",
+    rating: 4.7,
+    reviews: 98,
+    tag: "ESSENTIAL",
+    image: "https://images.unsplash.com/photo-1584735935682-2f2b69dff9d2?auto=format&fit=crop&q=80&w=500",
+    desc: "Non-slip grip support for heavy pulling movements.",
+  },
+  {
+    id: 6,
+    name: "Stainless Steel Insulated Gym Shaker (750ml)",
+    category: "gear",
+    categoryLabel: "Accessories",
+    price: "₹899",
+    originalPrice: "₹1,299",
+    rating: 4.8,
+    reviews: 165,
+    tag: "LEAK PROOF",
+    image: "https://images.unsplash.com/photo-1517838277536-f5f99be501cd?auto=format&fit=crop&q=80&w=500",
+    desc: "Double-wall thermal insulation to keep protein shakes ice cold.",
+  },
+];
 
 export default function Home() {
-  // Billing cycle state for Membership plans
+  const [selectedCategory, setSelectedCategory] = useState("all");
   const [isAnnual, setIsAnnual] = useState(false);
 
-  // State for BMI Calculator
-  const [weight, setWeight] = useState('');
-  const [height, setHeight] = useState('');
+  // BMI Calculator States
+  const [weight, setWeight] = useState("");
+  const [height, setHeight] = useState("");
   const [bmiResult, setBmiResult] = useState(null);
 
-  // Calculate BMI function
   const calculateBMI = (e) => {
     e.preventDefault();
     if (weight && height) {
       const heightInMeters = height / 100;
       const bmi = (weight / (heightInMeters * heightInMeters)).toFixed(1);
-      let category = '';
-      if (bmi < 18.5) category = 'Underweight';
-      else if (bmi < 24.9) category = 'Normal weight';
-      else if (bmi < 29.9) category = 'Overweight';
-      else category = 'Obese';
+      let category = "";
+      if (bmi < 18.5) category = "Underweight - Need Mass Gainer";
+      else if (bmi < 24.9) category = "Normal - Maintain / Lean Muscle";
+      else if (bmi < 29.9) category = "Overweight - Cut Fat / HIIT";
+      else category = "Obese - Fat Loss & Cardio Protocol";
 
       setBmiResult({ bmi, category });
     }
   };
 
-  // Products Data
-  const products = [
-    {
-      id: 1,
-      name: 'Cyber Isolate Whey Protein',
-      price: '$69.99',
-      rating: 4.9,
-      image: 'https://images.unsplash.com/photo-1593095948071-474c5cc2989d?auto=format&fit=crop&q=80&w=400',
-      tag: 'Best Seller'
-    },
-    {
-      id: 2,
-      name: 'Nitro Surge Pre-Workout',
-      price: '$44.99',
-      rating: 4.8,
-      image: 'https://images.unsplash.com/photo-1579722821273-0f6c7d44362f?auto=format&fit=crop&q=80&w=400',
-      tag: 'High Energy'
-    },
-    {
-      id: 3,
-      name: 'Pro Lifting Straps & Belt',
-      price: '$34.99',
-      rating: 4.7,
-      image: 'https://images.unsplash.com/photo-1517838277536-f5f99be501cd?auto=format&fit=crop&q=80&w=400',
-      tag: 'Gear'
-    },
-    {
-      id: 4,
-      name: 'BCAA Recovery Fuel Matrix',
-      price: '$39.99',
-      rating: 4.9,
-      image: 'https://images.unsplash.com/photo-1546483875-ad9014c88eba?auto=format&fit=crop&q=80&w=400',
-      tag: 'Recovery'
-    }
-  ];
-
-  // Programs Data
-  const programs = [
-    {
-      title: 'Hypertrophy & Strength',
-      desc: 'Build massive lean muscle with optimized progressive overload routines.',
-      icon: Dumbbell,
-      badge: 'Popular'
-    },
-    {
-      title: 'HIIT & Shred Acceleration',
-      desc: 'Melt fat off while preserving max muscle with high-intensity intervals.',
-      icon: Flame,
-      badge: 'Fat Loss'
-    },
-    {
-      title: 'Pro Boxing & Combat Fitness',
-      desc: 'Master striking techniques, agility, explosive power, and stamina.',
-      icon: Trophy,
-      badge: 'Agility'
-    }
-  ];
+  const filteredProducts =
+    selectedCategory === "all"
+      ? storeProducts
+      : storeProducts.filter((item) => item.category === selectedCategory);
 
   return (
-    <div className="bg-slate-950 text-white min-h-screen font-sans selection:bg-cyan-500 selection:text-black">
-      
-      {/* HERO SECTION */}
-      <section className="relative overflow-hidden pt-28 pb-20 md:pt-36 md:pb-28 border-b border-slate-800">
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[350px] bg-gradient-to-r from-cyan-500/20 via-blue-600/20 to-purple-600/20 blur-3xl rounded-full pointer-events-none"></div>
-        
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-          <div className="grid lg:grid-cols-2 gap-12 items-center">
-            
-            {/* Left Column - Text */}
-            <div className="space-y-6 text-center lg:text-left">
-              <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-cyan-950/80 border border-cyan-500/30 text-cyan-400 text-xs font-semibold uppercase tracking-wider">
-                <Zap size={14} className="animate-pulse" /> Next-Gen Fitness Protocol
-              </div>
-              
-              <h1 className="text-4xl sm:text-6xl font-black tracking-tight leading-none uppercase">
-                Forge Your <br />
-                <span className="bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-500">
-                  Ultimate Physique
-                </span>
-              </h1>
-              
-              <p className="text-slate-400 text-lg max-w-xl mx-auto lg:mx-0">
-                Unlock peak physical performance with elite training routines, real-time tracking, science-backed nutrition, and premium gear.
-              </p>
-              
-              <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start pt-2">
-                <Link
-                  to="/Signup"
-                  className="px-8 py-4 bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-black font-bold rounded-xl shadow-lg shadow-cyan-500/20 transition duration-300 flex items-center justify-center gap-2"
-                >
-                  Start Free Trial <ArrowRight size={18} />
-                </Link>
-                <Link
-                  to="/Login"
-                  className="px-8 py-4 bg-slate-900 border border-slate-700 hover:border-slate-500 text-white font-semibold rounded-xl transition duration-300 flex items-center justify-center"
-                >
-                  Member Login
-                </Link>
-              </div>
+    <div className="bg-slate-950 text-slate-100 min-h-screen pt-20 font-sans selection:bg-cyan-500 selection:text-black">
+      {/* 1. HERO SECTION */}
+      <section className="relative overflow-hidden py-20 lg:py-28 px-4 sm:px-6 lg:px-8 border-b border-slate-800/80">
+        <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[700px] h-[350px] bg-cyan-500/10 rounded-full blur-[140px] pointer-events-none" />
+        <div className="absolute bottom-10 right-10 w-96 h-96 bg-amber-500/10 rounded-full blur-[140px] pointer-events-none" />
 
-              {/* Stats Bar */}
-              <div className="grid grid-cols-3 gap-4 pt-8 border-t border-slate-800/80">
-                <div>
-                  <p className="text-2xl sm:text-3xl font-black text-white">15K+</p>
-                  <p className="text-xs text-slate-400 uppercase tracking-wider">Athletes</p>
-                </div>
-                <div>
-                  <p className="text-2xl sm:text-3xl font-black text-cyan-400">98%</p>
-                  <p className="text-xs text-slate-400 uppercase tracking-wider">Success Rate</p>
-                </div>
-                <div>
-                  <p className="text-2xl sm:text-3xl font-black text-purple-400">50+</p>
-                  <p className="text-xs text-slate-400 uppercase tracking-wider">Expert Coaches</p>
-                </div>
-              </div>
+        <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+          <div className="space-y-6 text-center lg:text-left">
+            <div className="inline-flex items-center gap-2 bg-slate-900 border border-cyan-500/30 px-4 py-1.5 rounded-full text-xs font-mono text-cyan-400">
+              <Sparkles className="w-4 h-4 text-cyan-400 animate-pulse" />
+              <span>OFFICIAL GYM PASS & AUTHENTIC SUPPLEMENT STORE</span>
             </div>
 
-            {/* Right Column - Hero Image */}
-            <div className="relative">
-              <div className="relative mx-auto max-w-md lg:max-w-none rounded-2xl overflow-hidden border border-slate-800 bg-slate-900/50 p-2 shadow-2xl">
-                <img
-                  src="https://images.unsplash.com/photo-1534438327276-14e5300c3a48?auto=format&fit=crop&q=80&w=800"
-                  alt="Cyber Athlete"
-                  className="w-full h-[450px] object-cover rounded-xl"
-                />
-                
-                {/* Floating Widget */}
-                <div className="absolute bottom-6 left-6 right-6 bg-slate-950/90 backdrop-blur-md border border-slate-800 p-4 rounded-xl flex items-center gap-4">
-                  <div className="p-3 bg-cyan-500/10 text-cyan-400 rounded-lg">
-                    <ShieldCheck size={28} />
-                  </div>
-                  <div>
-                    <p className="text-sm font-bold text-white">AI Muscle Tracker Active</p>
-                    <p className="text-xs text-slate-400">Optimizing hypertrophy sets in real-time...</p>
-                  </div>
-                </div>
-              </div>
+            <h1 className="text-4xl sm:text-6xl font-black tracking-tight text-white leading-tight">
+              BUILD YOUR BODY <br />
+              <span className="bg-gradient-to-r from-cyan-400 via-teal-300 to-amber-400 bg-clip-text text-transparent">
+                FUEL YOUR GAINS
+              </span>
+            </h1>
+
+            <p className="text-slate-400 text-base sm:text-lg max-w-xl mx-auto lg:mx-0 leading-relaxed">
+              State-of-the-art gym access combined with 100% original Protein, Creatine, Pre-Workout, and heavy-duty gym gear — all delivered under one roof.
+            </p>
+
+            <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 pt-2">
+              <Link
+                to="/Signup"
+                className="w-full sm:w-auto px-8 py-4 rounded-2xl bg-cyan-500 hover:bg-cyan-400 text-black font-black uppercase text-sm tracking-wider transition-all duration-300 shadow-[0_0_30px_rgba(6,182,212,0.3)] flex items-center justify-center gap-2"
+              >
+                Join Gym Today <Zap className="w-4 h-4 fill-black" />
+              </Link>
+              <a
+                href="#store"
+                className="w-full sm:w-auto px-8 py-4 rounded-2xl bg-slate-900 hover:bg-slate-800 text-white border border-slate-700 font-bold text-sm transition-all duration-300 flex items-center justify-center gap-2"
+              >
+                Buy Supplements <ShoppingBag className="w-4 h-4 text-amber-400" />
+              </a>
             </div>
 
+            {/* Live Stats */}
+            <div className="grid grid-cols-3 gap-4 pt-8 border-t border-slate-800/80">
+              <div>
+                <p className="text-2xl sm:text-3xl font-black text-white">12,500+</p>
+                <p className="text-xs text-slate-400 uppercase tracking-wider font-mono">Active Members</p>
+              </div>
+              <div>
+                <p className="text-2xl sm:text-3xl font-black text-cyan-400">100%</p>
+                <p className="text-xs text-slate-400 uppercase tracking-wider font-mono">Lab Pure</p>
+              </div>
+              <div>
+                <p className="text-2xl sm:text-3xl font-black text-amber-400">24/7</p>
+                <p className="text-xs text-slate-400 uppercase tracking-wider font-mono">Gym Access</p>
+              </div>
+            </div>
           </div>
-        </div>
-      </section>
 
-      {/* TRAINING PROGRAMS SECTION */}
-      <section className="py-20 bg-slate-950 border-b border-slate-900">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          
-          <div className="text-center max-w-2xl mx-auto mb-16">
-            <h2 className="text-xs font-bold text-cyan-400 tracking-widest uppercase mb-2">Training Systems</h2>
-            <p className="text-3xl sm:text-4xl font-extrabold uppercase">Engineered For Explosive Results</p>
-          </div>
-
-          <div className="grid md:grid-cols-3 gap-8">
-            {programs.map((program, idx) => {
-              const Icon = program.icon;
-              return (
-                <div 
-                  key={idx} 
-                  className="group relative bg-slate-900/60 border border-slate-800 rounded-2xl p-8 hover:border-cyan-500/50 transition duration-300 flex flex-col justify-between"
-                >
-                  <div>
-                    <div className="flex justify-between items-start mb-6">
-                      <div className="p-3 bg-cyan-500/10 text-cyan-400 rounded-xl group-hover:scale-110 transition duration-300">
-                        <Icon size={28} />
-                      </div>
-                      <span className="text-xs font-bold px-2.5 py-1 bg-slate-800 text-slate-300 rounded-md border border-slate-700">
-                        {program.badge}
-                      </span>
+          {/* Hero Visual Card */}
+          <div className="relative flex justify-center">
+            <div className="w-full max-w-md bg-slate-900 border border-slate-800 rounded-3xl p-6 shadow-2xl relative overflow-hidden">
+              <div className="absolute top-0 right-0 w-32 h-32 bg-cyan-500/20 rounded-full blur-3xl pointer-events-none" />
+              
+              <div className="relative z-10 space-y-4">
+                <div className="flex items-center justify-between border-b border-slate-800 pb-4">
+                  <div className="flex items-center gap-3">
+                    <div className="p-2.5 bg-cyan-500/10 text-cyan-400 rounded-xl">
+                      <Dumbbell className="w-6 h-6" />
                     </div>
-                    <h3 className="text-xl font-bold mb-3">{program.title}</h3>
-                    <p className="text-slate-400 text-sm leading-relaxed mb-6">{program.desc}</p>
+                    <div>
+                      <h4 className="font-bold text-sm text-white">GymX Hub & Store</h4>
+                      <p className="text-xs text-slate-400">All Gym Needs Integrated</p>
+                    </div>
+                  </div>
+                  <span className="text-[10px] font-bold bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 px-2.5 py-1 rounded-full uppercase">
+                    ACTIVE
+                  </span>
+                </div>
+
+                <div className="space-y-3 pt-2">
+                  <div className="flex justify-between items-center bg-slate-950 p-3 rounded-xl border border-slate-800/80 text-xs">
+                    <span className="text-slate-300 font-semibold flex items-center gap-2">
+                      <PackageCheck className="w-4 h-4 text-cyan-400" /> Whey Isolate & Creatine
+                    </span>
+                    <span className="text-cyan-400 font-bold">In Stock</span>
                   </div>
 
-                  <Link to="/Signup" className="inline-flex items-center text-sm font-semibold text-cyan-400 group-hover:text-cyan-300 gap-1">
-                    Explore Protocol <ChevronRight size={16} />
+                  <div className="flex justify-between items-center bg-slate-950 p-3 rounded-xl border border-slate-800/80 text-xs">
+                    <span className="text-slate-300 font-semibold flex items-center gap-2">
+                      <Flame className="w-4 h-4 text-amber-400" /> High Octane Pre-Workout
+                    </span>
+                    <span className="text-amber-400 font-bold">Trending</span>
+                  </div>
+
+                  <div className="flex justify-between items-center bg-slate-950 p-3 rounded-xl border border-slate-800/80 text-xs">
+                    <span className="text-slate-300 font-semibold flex items-center gap-2">
+                      <ShieldCheck className="w-4 h-4 text-purple-400" /> Belts, Straps & Shakers
+                    </span>
+                    <span className="text-purple-400 font-bold">Original</span>
+                  </div>
+                </div>
+
+                <div className="pt-4">
+                  <Link
+                    to="/Signup"
+                    className="w-full py-3 bg-slate-800 hover:bg-slate-700 text-white text-xs font-bold rounded-xl flex items-center justify-center gap-2 transition"
+                  >
+                    View All Gym Passes & Store <ChevronRight className="w-4 h-4" />
                   </Link>
                 </div>
-              );
-            })}
+              </div>
+            </div>
           </div>
-
         </div>
       </section>
 
-      {/* E-COMMERCE SUPPLEMENT STORE SECTION */}
-      <section className="py-20 bg-slate-900/30 border-b border-slate-900">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          
-          <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-12">
-            <div>
-              <h2 className="text-xs font-bold text-cyan-400 tracking-widest uppercase mb-2">Official Gear & Fuel</h2>
-              <p className="text-3xl font-extrabold uppercase">Cyber Store Essentials</p>
-            </div>
-            <button className="mt-4 md:mt-0 text-sm font-semibold text-slate-400 hover:text-white flex items-center gap-1">
-              View All Products <ChevronRight size={16} />
-            </button>
-          </div>
+      {/* 2. DEDICATED GYM E-COMMERCE STORE SECTION */}
+      <section id="store" className="py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto border-b border-slate-800/80">
+        <div className="text-center max-w-2xl mx-auto mb-12">
+          <span className="text-amber-400 text-xs font-mono font-bold uppercase tracking-widest flex items-center justify-center gap-2 mb-2">
+            <PackageCheck className="w-4 h-4" /> Authentic Gym Nutrition & Gear
+          </span>
+          <h2 className="text-3xl sm:text-4xl font-black text-white uppercase">
+            PURE GYM ESSENTIALS SHOP
+          </h2>
+          <p className="text-slate-400 text-sm mt-2">
+            No filler products. Only high-potency Supplements, Creatine, Pre-workouts, and Heavy-Duty Lifting Gear.
+          </p>
 
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {products.map((item) => (
-              <div key={item.id} className="bg-slate-900 border border-slate-800 rounded-xl overflow-hidden hover:border-slate-700 transition duration-300 flex flex-col justify-between">
-                <div>
-                  <div className="relative h-48 overflow-hidden bg-slate-950">
-                    <img 
-                      src={item.image} 
-                      alt={item.name} 
-                      className="w-full h-full object-cover group-hover:scale-105 transition duration-500"
-                    />
-                    <span className="absolute top-3 left-3 bg-slate-950/80 backdrop-blur-md text-cyan-400 border border-cyan-500/30 text-[10px] font-bold uppercase px-2 py-0.5 rounded">
-                      {item.tag}
-                    </span>
-                  </div>
-                  <div className="p-5">
-                    <div className="flex items-center gap-1 text-amber-400 text-xs font-bold mb-2">
-                      <Star size={14} fill="currentColor" />
-                      <span>{item.rating}</span>
-                    </div>
-                    <h4 className="font-bold text-white mb-2 line-clamp-1">{item.name}</h4>
-                    <p className="text-xl font-black text-cyan-400">{item.price}</p>
-                  </div>
-                </div>
-                
-                <div className="px-5 pb-5">
-                  <button className="w-full py-2.5 bg-slate-800 hover:bg-cyan-500 hover:text-black text-white text-xs font-bold uppercase rounded-lg transition duration-300 flex items-center justify-center gap-2">
-                    <ShoppingBag size={14} /> Add To Cart
-                  </button>
-                </div>
-              </div>
+          {/* Category Filter Buttons */}
+          <div className="flex flex-wrap items-center justify-center gap-2 mt-8">
+            {[
+              { id: "all", label: "All Items" },
+              { id: "protein", label: "Proteins" },
+              { id: "creatine", label: "Creatine" },
+              { id: "preworkout", label: "Pre-Workout" },
+              { id: "gear", label: "Belts & Gear" },
+            ].map((tab) => (
+              <button
+                key={tab.id}
+                onClick={() => setSelectedCategory(tab.id)}
+                className={`px-5 py-2.5 rounded-xl text-xs font-bold transition duration-300 ${
+                  selectedCategory === tab.id
+                    ? "bg-cyan-500 text-black shadow-lg shadow-cyan-500/20"
+                    : "bg-slate-900 text-slate-400 hover:text-white border border-slate-800"
+                }`}
+              >
+                {tab.label}
+              </button>
             ))}
           </div>
+        </div>
 
+        {/* Product Cards Grid */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+          {filteredProducts.map((product) => (
+            <div
+              key={product.id}
+              className="bg-slate-900 border border-slate-800 rounded-3xl overflow-hidden hover:border-cyan-500/50 transition duration-300 flex flex-col justify-between group"
+            >
+              <div>
+                <div className="relative h-56 bg-slate-950 overflow-hidden">
+                  <img
+                    src={product.image}
+                    alt={product.name}
+                    className="w-full h-full object-cover group-hover:scale-105 transition duration-500"
+                  />
+                  <span className="absolute top-4 left-4 bg-slate-950/90 text-cyan-400 border border-cyan-500/30 text-[10px] font-black uppercase px-3 py-1 rounded-full">
+                    {product.tag}
+                  </span>
+                </div>
+
+                <div className="p-6">
+                  <div className="flex items-center justify-between mb-2">
+                    <span className="text-[11px] font-mono text-cyan-400 font-bold uppercase">{product.categoryLabel}</span>
+                    <div className="flex items-center gap-1 text-amber-400 text-xs font-bold">
+                      <Star className="w-3.5 h-3.5 fill-amber-400" />
+                      <span>{product.rating}</span>
+                      <span className="text-slate-500">({product.reviews})</span>
+                    </div>
+                  </div>
+
+                  <h3 className="font-bold text-white text-base mb-2 line-clamp-1">{product.name}</h3>
+                  <p className="text-xs text-slate-400 leading-relaxed mb-4">{product.desc}</p>
+
+                  <div className="flex items-baseline gap-2">
+                    <span className="text-2xl font-black text-white">{product.price}</span>
+                    <span className="text-xs text-slate-500 line-through">{product.originalPrice}</span>
+                  </div>
+                </div>
+              </div>
+
+              <div className="px-6 pb-6">
+                <button className="w-full py-3.5 bg-slate-800 hover:bg-cyan-500 hover:text-black text-white text-xs font-black uppercase rounded-xl transition duration-300 flex items-center justify-center gap-2">
+                  <ShoppingBag className="w-4 h-4" /> Add To Cart
+                </button>
+              </div>
+            </div>
+          ))}
         </div>
       </section>
 
-      {/* INTERACTIVE BMI CALCULATOR SECTION */}
-      <section className="py-20 bg-slate-950 border-b border-slate-900">
+      {/* 3. INTERACTIVE BMI & CALORIE CALCULATOR */}
+      <section className="py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto border-b border-slate-800/80">
+        <div className="bg-gradient-to-r from-slate-900 to-slate-900/90 border border-slate-800 rounded-3xl p-8 lg:p-12">
+          <div className="grid lg:grid-cols-2 gap-12 items-center">
+            <div>
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-500/10 text-cyan-400 text-xs font-bold uppercase mb-4">
+                <Calculator className="w-4 h-4" /> Fitness Metric Engine
+              </div>
+              <h3 className="text-3xl font-black uppercase text-white mb-4">Calculate Your Body Status</h3>
+              <p className="text-slate-400 text-sm leading-relaxed mb-6">
+                Know your Body Mass Index (BMI) instantly to pick the right Supplement stack (Mass Gainer vs Whey Isolate) and workout pass.
+              </p>
+
+              <form onSubmit={calculateBMI} className="space-y-4">
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-xs font-bold uppercase text-slate-400 mb-1">Height (cm)</label>
+                    <input
+                      type="number"
+                      value={height}
+                      onChange={(e) => setHeight(e.target.value)}
+                      placeholder="e.g. 175"
+                      required
+                      className="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-cyan-500 text-sm"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-xs font-bold uppercase text-slate-400 mb-1">Weight (kg)</label>
+                    <input
+                      type="number"
+                      value={weight}
+                      onChange={(e) => setWeight(e.target.value)}
+                      placeholder="e.g. 72"
+                      required
+                      className="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-cyan-500 text-sm"
+                    />
+                  </div>
+                </div>
+                <button
+                  type="submit"
+                  className="w-full py-3.5 bg-cyan-500 hover:bg-cyan-400 text-black font-black uppercase text-xs rounded-xl transition duration-300"
+                >
+                  Calculate My BMI
+                </button>
+              </form>
+            </div>
+
+            <div className="bg-slate-950 border border-slate-800 rounded-2xl p-8 flex flex-col items-center justify-center text-center min-h-[260px]">
+              {bmiResult ? (
+                <div className="space-y-4">
+                  <p className="text-xs font-bold uppercase text-slate-400 tracking-wider">Your Score</p>
+                  <p className="text-6xl font-black text-cyan-400">{bmiResult.bmi}</p>
+                  <div className="inline-block px-4 py-2 bg-slate-900 border border-slate-800 rounded-xl text-xs font-bold text-white">
+                    Recommendation: <span className="text-amber-400">{bmiResult.category}</span>
+                  </div>
+                </div>
+              ) : (
+                <div className="text-slate-500 space-y-2">
+                  <Calculator className="w-12 h-12 mx-auto opacity-40 mb-2" />
+                  <p className="text-sm">Enter height & weight to check your recommendation.</p>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* 4. MEMBERSHIP PLANS SECTION */}
+      <section className="py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto border-b border-slate-800/80">
+        <div className="text-center max-w-2xl mx-auto mb-12">
+          <span className="text-cyan-400 text-xs font-mono font-bold uppercase tracking-widest mb-2 block">
+            Gym Pass Memberships
+          </span>
+          <h2 className="text-3xl sm:text-4xl font-black text-white uppercase mb-6">
+            CHOOSE YOUR ACCESS TIER
+          </h2>
+
+          <div className="inline-flex items-center bg-slate-900 p-1.5 rounded-full border border-slate-800">
+            <button
+              onClick={() => setIsAnnual(false)}
+              className={`px-6 py-2 rounded-full text-xs font-bold transition ${
+                !isAnnual ? "bg-cyan-500 text-black" : "text-slate-400 hover:text-white"
+              }`}
+            >
+              Monthly Pass
+            </button>
+            <button
+              onClick={() => setIsAnnual(true)}
+              className={`px-6 py-2 rounded-full text-xs font-bold transition ${
+                isAnnual ? "bg-cyan-500 text-black" : "text-slate-400 hover:text-white"
+              }`}
+            >
+              Annual Pass <span className="text-[10px] opacity-80">(Save 20%)</span>
+            </button>
+          </div>
+        </div>
+
+        <div className="grid md:grid-cols-3 gap-8">
+          {/* Starter Plan */}
+          <div className="bg-slate-900/60 border border-slate-800 rounded-3xl p-8 flex flex-col justify-between">
+            <div>
+              <h3 className="text-lg font-bold uppercase text-white mb-2">Starter Pass</h3>
+              <p className="text-slate-400 text-xs mb-6">Standard Gym floor & cardio access.</p>
+              <div className="mb-6">
+                <span className="text-4xl font-black text-white">{isAnnual ? "₹1,499" : "₹1,899"}</span>
+                <span className="text-slate-400 text-xs">/month</span>
+              </div>
+              <ul className="space-y-3 text-sm text-slate-300 mb-8">
+                <li className="flex items-center gap-2"><Check className="w-4 h-4 text-cyan-400" /> Standard Gym Floor Access</li>
+                <li className="flex items-center gap-2"><Check className="w-4 h-4 text-cyan-400" /> Locker Room & Shower</li>
+                <li className="flex items-center gap-2"><Check className="w-4 h-4 text-cyan-400" /> 5% Off Supplements Shop</li>
+              </ul>
+            </div>
+            <Link to="/Signup" className="w-full py-3.5 bg-slate-800 hover:bg-slate-700 text-center text-xs font-bold uppercase rounded-xl transition">
+              Get Starter Pass
+            </Link>
+          </div>
+
+          {/* Pro Beast Plan */}
+          <div className="relative bg-slate-900 border-2 border-cyan-500 rounded-3xl p-8 flex flex-col justify-between shadow-2xl shadow-cyan-500/10">
+            <span className="absolute -top-3.5 left-1/2 -translate-x-1/2 bg-cyan-500 text-black text-[10px] font-black uppercase tracking-widest px-4 py-1 rounded-full">
+              Most Popular
+            </span>
+            <div>
+              <h3 className="text-lg font-bold uppercase text-cyan-400 mb-2">Pro Beast Pass</h3>
+              <p className="text-slate-400 text-xs mb-6">Unlimited Gym, Heavy Lifting Area & HIIT Classes.</p>
+              <div className="mb-6">
+                <span className="text-4xl font-black text-white">{isAnnual ? "₹2,499" : "₹2,999"}</span>
+                <span className="text-slate-400 text-xs">/month</span>
+              </div>
+              <ul className="space-y-3 text-sm text-slate-300 mb-8">
+                <li className="flex items-center gap-2"><Check className="w-4 h-4 text-cyan-400" /> 24/7 All Gym Floor & Steam Bath</li>
+                <li className="flex items-center gap-2"><Check className="w-4 h-4 text-cyan-400" /> All Group HIIT & Boxing Classes</li>
+                <li className="flex items-center gap-2"><Check className="w-4 h-4 text-cyan-400" /> Free Monthly Body Composition Analysis</li>
+                <li className="flex items-center gap-2"><Check className="w-4 h-4 text-cyan-400" /> 15% Off All Protein & Creatine Orders</li>
+              </ul>
+            </div>
+            <Link to="/Signup" className="w-full py-3.5 bg-cyan-500 hover:bg-cyan-400 text-black text-center text-xs font-black uppercase rounded-xl transition">
+              Join Pro Beast Tier
+            </Link>
+          </div>
+
+          {/* VIP Plan */}
+          <div className="bg-slate-900/60 border border-slate-800 rounded-3xl p-8 flex flex-col justify-between">
+            <div>
+              <h3 className="text-lg font-bold uppercase text-white mb-2">Elite VIP Pass</h3>
+              <p className="text-slate-400 text-xs mb-6">1-on-1 Personal Trainer & Custom Supplement Protocol.</p>
+              <div className="mb-6">
+                <span className="text-4xl font-black text-white">{isAnnual ? "₹4,999" : "₹5,999"}</span>
+                <span className="text-slate-400 text-xs">/month</span>
+              </div>
+              <ul className="space-y-3 text-sm text-slate-300 mb-8">
+                <li className="flex items-center gap-2"><Check className="w-4 h-4 text-cyan-400" /> Everything in Pro Beast Pass</li>
+                <li className="flex items-center gap-2"><Check className="w-4 h-4 text-cyan-400" /> Dedicated Personal Trainer</li>
+                <li className="flex items-center gap-2"><Check className="w-4 h-4 text-cyan-400" /> Personalized Diet & Supplement Stack</li>
+                <li className="flex items-center gap-2"><Check className="w-4 h-4 text-cyan-400" /> 25% Flat Discount On All Store Items</li>
+              </ul>
+            </div>
+            <Link to="/Signup" className="w-full py-3.5 bg-slate-800 hover:bg-slate-700 text-center text-xs font-bold uppercase rounded-xl transition">
+              Get VIP Access
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* 5. TRUST BADGES SECTION */}
+      <section className="py-12 bg-slate-900/30">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="bg-gradient-to-r from-slate-900 to-slate-900/80 border border-slate-800 rounded-3xl p-8 lg:p-12">
-            <div className="grid lg:grid-cols-2 gap-12 items-center">
-              
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-center md:text-left">
+            <div className="flex items-center gap-4 justify-center md:justify-start">
+              <div className="p-3 bg-cyan-500/10 text-cyan-400 rounded-2xl border border-cyan-500/20">
+                <ShieldCheck className="w-6 h-6" />
+              </div>
               <div>
-                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-500/10 text-cyan-400 text-xs font-bold uppercase mb-4">
-                  <Calculator size={14} /> Metric Analysis
-                </div>
-                <h3 className="text-3xl font-extrabold uppercase mb-4">Calculate Your Body Mass Index</h3>
-                <p className="text-slate-400 text-sm leading-relaxed mb-6">
-                  Quickly gauge your physical baseline with our instant calculation module. Use these insights to choose the ideal training track.
-                </p>
-
-                <form onSubmit={calculateBMI} className="space-y-4">
-                  <div className="grid grid-cols-2 gap-4">
-                    <div>
-                      <label className="block text-xs font-bold uppercase text-slate-400 mb-1">Height (cm)</label>
-                      <input 
-                        type="number" 
-                        value={height} 
-                        onChange={(e) => setHeight(e.target.value)} 
-                        placeholder="e.g. 175"
-                        required
-                        className="w-full bg-slate-950 border border-slate-800 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-cyan-500 text-sm"
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-xs font-bold uppercase text-slate-400 mb-1">Weight (kg)</label>
-                      <input 
-                        type="number" 
-                        value={weight} 
-                        onChange={(e) => setWeight(e.target.value)} 
-                        placeholder="e.g. 70"
-                        required
-                        className="w-full bg-slate-950 border border-slate-800 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-cyan-500 text-sm"
-                      />
-                    </div>
-                  </div>
-                  <button 
-                    type="submit"
-                    className="w-full py-3.5 bg-cyan-500 hover:bg-cyan-400 text-black font-bold uppercase text-xs rounded-lg transition duration-300"
-                  >
-                    Calculate BMI
-                  </button>
-                </form>
+                <h4 className="font-bold text-sm text-white">100% Authentic Supplements</h4>
+                <p className="text-xs text-slate-400">Directly imported with QR verification codes</p>
               </div>
+            </div>
 
-              {/* BMI Result Display */}
-              <div className="bg-slate-950 border border-slate-800 rounded-2xl p-8 flex flex-col items-center justify-center text-center min-h-[260px]">
-                {bmiResult ? (
-                  <div className="space-y-4">
-                    <p className="text-xs font-bold uppercase text-slate-400 tracking-wider">Your Result</p>
-                    <p className="text-6xl font-black text-cyan-400">{bmiResult.bmi}</p>
-                    <div className="inline-block px-4 py-1.5 bg-slate-900 border border-slate-700 rounded-full text-xs font-bold text-white">
-                      Status: <span className="text-cyan-400">{bmiResult.category}</span>
-                    </div>
-                  </div>
-                ) : (
-                  <div className="text-slate-500 space-y-2">
-                    <Calculator size={48} className="mx-auto opacity-40 mb-2" />
-                    <p className="text-sm">Enter your metrics to reveal your status.</p>
-                  </div>
-                )}
+            <div className="flex items-center gap-4 justify-center md:justify-start">
+              <div className="p-3 bg-amber-500/10 text-amber-400 rounded-2xl border border-amber-500/20">
+                <Truck className="w-6 h-6" />
               </div>
+              <div>
+                <h4 className="font-bold text-sm text-white">Superfast Shipping</h4>
+                <p className="text-xs text-slate-400">Same day dispatch on Whey, Creatine & Gear</p>
+              </div>
+            </div>
 
+            <div className="flex items-center gap-4 justify-center md:justify-start">
+              <div className="p-3 bg-purple-500/10 text-purple-400 rounded-2xl border border-purple-500/20">
+                <Zap className="w-6 h-6" />
+              </div>
+              <div>
+                <h4 className="font-bold text-sm text-white">Instant Gym Entry Pass</h4>
+                <p className="text-xs text-slate-400">QR entry generated instantly after registration</p>
+              </div>
             </div>
           </div>
         </div>
       </section>
-
-      {/* MEMBERSHIP PRICING SECTION */}
-      <section className="py-20 bg-slate-950">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          
-          <div className="text-center max-w-2xl mx-auto mb-12">
-            <h2 className="text-xs font-bold text-cyan-400 tracking-widest uppercase mb-2">Membership Plans</h2>
-            <p className="text-3xl sm:text-4xl font-extrabold uppercase mb-6">Ready To Level Up?</p>
-            
-            {/* Toggle Monthly / Annual */}
-            <div className="inline-flex items-center bg-slate-900 p-1.5 rounded-full border border-slate-800">
-              <button 
-                onClick={() => setIsAnnual(false)}
-                className={`px-5 py-2 rounded-full text-xs font-bold transition ${!isAnnual ? 'bg-cyan-500 text-black' : 'text-slate-400 hover:text-white'}`}
-              >
-                Monthly
-              </button>
-              <button 
-                onClick={() => setIsAnnual(true)}
-                className={`px-5 py-2 rounded-full text-xs font-bold transition ${isAnnual ? 'bg-cyan-500 text-black' : 'text-slate-400 hover:text-white'}`}
-              >
-                Annual <span className="text-[10px] opacity-80">(Save 20%)</span>
-              </button>
-            </div>
-          </div>
-
-          <div className="grid md:grid-cols-3 gap-8">
-            
-            {/* Starter Plan */}
-            <div className="bg-slate-900/50 border border-slate-800 rounded-2xl p-8 flex flex-col justify-between">
-              <div>
-                <h3 className="text-lg font-bold uppercase mb-2">Starter Tier</h3>
-                <p className="text-slate-400 text-xs mb-6">Essential gym access & workout logs.</p>
-                <div className="mb-6">
-                  <span className="text-4xl font-black">{isAnnual ? '$29' : '$35'}</span>
-                  <span className="text-slate-400 text-xs">/month</span>
-                </div>
-                <ul className="space-y-3 text-sm text-slate-300 mb-8">
-                  <li className="flex items-center gap-2"><Check size={16} className="text-cyan-400" /> Full Gym Floor Access</li>
-                  <li className="flex items-center gap-2"><Check size={16} className="text-cyan-400" /> Basic Locker Room</li>
-                  <li className="flex items-center gap-2"><Check size={16} className="text-cyan-400" /> App Workout Logging</li>
-                </ul>
-              </div>
-              <Link to="/Signup" className="w-full py-3 bg-slate-800 hover:bg-slate-700 text-center text-xs font-bold uppercase rounded-xl transition">
-                Choose Starter
-              </Link>
-            </div>
-
-            {/* Pro Plan (Highlighted) */}
-            <div className="relative bg-slate-900 border-2 border-cyan-500 rounded-2xl p-8 flex flex-col justify-between shadow-2xl shadow-cyan-500/10">
-              <span className="absolute -top-3.5 left-1/2 -translate-x-1/2 bg-cyan-500 text-black text-[10px] font-black uppercase tracking-widest px-3 py-1 rounded-full">
-                Most Popular
-              </span>
-              <div>
-                <h3 className="text-lg font-bold uppercase mb-2 text-cyan-400">Pro Beast Tier</h3>
-                <p className="text-slate-400 text-xs mb-6">For dedicated athletes seeking max results.</p>
-                <div className="mb-6">
-                  <span className="text-4xl font-black">{isAnnual ? '$59' : '$69'}</span>
-                  <span className="text-slate-400 text-xs">/month</span>
-                </div>
-                <ul className="space-y-3 text-sm text-slate-300 mb-8">
-                  <li className="flex items-center gap-2"><Check size={16} className="text-cyan-400" /> Everything in Starter</li>
-                  <li className="flex items-center gap-2"><Check size={16} className="text-cyan-400" /> All HIIT & Combat Classes</li>
-                  <li className="flex items-center gap-2"><Check size={16} className="text-cyan-400" /> Sauna & Recovery Lounge</li>
-                  <li className="flex items-center gap-2"><Check size={16} className="text-cyan-400" /> 10% Off Store Products</li>
-                </ul>
-              </div>
-              <Link to="/Signup" className="w-full py-3 bg-cyan-500 hover:bg-cyan-400 text-black text-center text-xs font-bold uppercase rounded-xl transition">
-                Join Pro Beast
-              </Link>
-            </div>
-
-            {/* VIP Plan */}
-            <div className="bg-slate-900/50 border border-slate-800 rounded-2xl p-8 flex flex-col justify-between">
-              <div>
-                <h3 className="text-lg font-bold uppercase mb-2">Elite VIP Tier</h3>
-                <p className="text-slate-400 text-xs mb-6">Complete 1-on-1 coaching & elite access.</p>
-                <div className="mb-6">
-                  <span className="text-4xl font-black">{isAnnual ? '$119' : '$139'}</span>
-                  <span className="text-slate-400 text-xs">/month</span>
-                </div>
-                <ul className="space-y-3 text-sm text-slate-300 mb-8">
-                  <li className="flex items-center gap-2"><Check size={16} className="text-cyan-400" /> Everything in Pro</li>
-                  <li className="flex items-center gap-2"><Check size={16} className="text-cyan-400" /> Dedicated Personal Trainer</li>
-                  <li className="flex items-center gap-2"><Check size={16} className="text-cyan-400" /> Customized Nutrition Plan</li>
-                  <li className="flex items-center gap-2"><Check size={16} className="text-cyan-400" /> 20% Off Store Products</li>
-                </ul>
-              </div>
-              <Link to="/Signup" className="w-full py-3 bg-slate-800 hover:bg-slate-700 text-center text-xs font-bold uppercase rounded-xl transition">
-                Get VIP Access
-              </Link>
-            </div>
-
-          </div>
-
-        </div>
-      </section>
-
     </div>
   );
 }
