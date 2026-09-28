@@ -93,10 +93,11 @@ function Footer() {
 
   return (
     <footer className="bg-zinc-950 text-zinc-400 border-t border-zinc-800/80 relative overflow-hidden font-sans">
+      {/* Background Accent Blur Lights */}
       <div className="absolute top-0 left-1/4 w-96 h-96 bg-amber-500/5 rounded-full blur-[120px] pointer-events-none" />
       <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-cyan-500/5 rounded-full blur-[120px] pointer-events-none" />
 
-      {/* Top Banner */}
+      {/* Top CTA Banner */}
       <div className="border-b border-zinc-800/80 bg-zinc-900/40 backdrop-blur-md py-10 px-6">
         <div className="max-w-7xl mx-auto flex flex-col lg:flex-row items-center justify-between gap-6">
           <div>
@@ -138,7 +139,7 @@ function Footer() {
         </div>
       </div>
 
-      {/* Main Content */}
+      {/* Main Footer Links & Info */}
       <div className="max-w-7xl mx-auto px-6 py-16">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-10">
           
@@ -167,6 +168,7 @@ function Footer() {
               </div>
             </div>
 
+            {/* Social Icons */}
             <div className="flex items-center gap-3 pt-2">
               {[
                 { icon: InstagramIcon, href: "#", label: "Instagram" },
@@ -177,6 +179,7 @@ function Footer() {
                 <a
                   key={idx}
                   href={social.href}
+                  aria-label={social.label}
                   title={social.label}
                   className="p-2.5 rounded-xl bg-zinc-900 border border-zinc-800 text-zinc-400 hover:text-white hover:border-amber-500/50 hover:bg-amber-500/10 transition-all duration-300"
                 >
@@ -193,8 +196,8 @@ function Footer() {
             </h3>
             <ul className="space-y-2.5 text-sm">
               <li><Link to="/" className="hover:text-amber-400 transition-colors">Home Page</Link></li>
-              <li><Link to="/Login" className="hover:text-amber-400 transition-colors">Member Login</Link></li>
-              <li><Link to="/Signup" className="hover:text-amber-400 transition-colors">Join Membership</Link></li>
+              <li><Link to="/login" className="hover:text-amber-400 transition-colors">Member Login</Link></li>
+              <li><Link to="/signup" className="hover:text-amber-400 transition-colors">Join Membership</Link></li>
             </ul>
           </div>
 
@@ -203,9 +206,9 @@ function Footer() {
               Membership
             </h3>
             <ul className="space-y-2.5 text-sm">
-              <li><Link to="/Signup" className="hover:text-cyan-400 transition-colors">Starter Pass</Link></li>
-              <li><Link to="/Signup" className="hover:text-cyan-400 transition-colors">Pro Hypertrophy</Link></li>
-              <li><Link to="/Signup" className="hover:text-cyan-400 transition-colors">Elite VIP</Link></li>
+              <li><Link to="/signup" className="hover:text-cyan-400 transition-colors">Starter Pass</Link></li>
+              <li><Link to="/signup" className="hover:text-cyan-400 transition-colors">Pro Hypertrophy</Link></li>
+              <li><Link to="/signup" className="hover:text-cyan-400 transition-colors">Elite VIP</Link></li>
             </ul>
           </div>
 
@@ -214,9 +217,9 @@ function Footer() {
               Account
             </h3>
             <ul className="space-y-2.5 text-sm">
-              <li><Link to="/Login" className="hover:text-amber-400 transition-colors">My Profile</Link></li>
-              <li><Link to="/Login" className="hover:text-amber-400 transition-colors">My Subscriptions</Link></li>
-              <li><Link to="/Login" className="hover:text-amber-400 transition-colors">Order History</Link></li>
+              <li><Link to="/login" className="hover:text-amber-400 transition-colors">My Profile</Link></li>
+              <li><Link to="/login" className="hover:text-amber-400 transition-colors">My Subscriptions</Link></li>
+              <li><Link to="/login" className="hover:text-amber-400 transition-colors">Order History</Link></li>
             </ul>
           </div>
         </div>
@@ -240,7 +243,7 @@ function Footer() {
         {/* Bottom Bar */}
         <div className="flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-zinc-500">
           <div>
-            © 2026 <span className="text-white font-bold">GymX Inc</span>. All Rights Reserved.
+            © {new Date().getFullYear()} <span className="text-white font-bold">GymX Inc</span>. All Rights Reserved.
           </div>
         </div>
       </div>
